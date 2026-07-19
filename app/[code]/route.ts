@@ -16,9 +16,9 @@ import { resolveLink, registerClick } from "@/lib/shortener";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { code: string } }
+  { params }: { params: Promise<{ code: string }> }
 ) {
-  const code = params.code;
+  const { code } = await params;
 
   let record;
   try {

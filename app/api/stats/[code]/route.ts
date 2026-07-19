@@ -12,10 +12,11 @@ import { getStats } from "@/lib/shortener";
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { code: string } }
+  { params }: { params: Promise<{ code: string }> }
 ) {
   try {
-    const stats = await getStats(params.code);
+    const { code } = await params;
+    const stats = await getStats(code);
     if (!stats) {
       return NextResponse.json({ error: "Link not found or expired." }, { status: 404 });
     }

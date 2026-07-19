@@ -1,6 +1,8 @@
 "use client";
 
+import { use } from "react";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { fetchStats, copyToClipboard } from "@/lib/client";
 import BarChart from "@/components/BarChart";
 import type { LinkStats } from "@/lib/types";
@@ -13,9 +15,9 @@ function fmtDate(iso?: string) {
 export default function LinkStatsPage({
   params
 }: {
-  params: { code: string };
+  params: Promise<{ code: string }>;
 }) {
-  const { code } = params;
+  const { code } = use(params);
   const [stats, setStats] = useState<LinkStats | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -34,9 +36,9 @@ export default function LinkStatsPage({
     return (
       <div className="card">
         <p className="text-sm text-red-300">{error || "Link not found."}</p>
-        <a href="/" className="mt-2 inline-block text-sm text-brand-300 underline">
+        <Link href="/" className="mt-2 inline-block text-sm text-brand-300 underline">
           ← Back home
-        </a>
+        </Link>
       </div>
     );
   }
